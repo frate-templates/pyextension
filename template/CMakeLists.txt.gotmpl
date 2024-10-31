@@ -55,7 +55,7 @@ endif()
 
 
 set(BUILD_DIR {{ .BuildDir }})
-set_target_properties({{name}} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{ .BuildDir }})
+set_target_properties({{ .ProjectName }} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{ .BuildDir }})
 
 if (WIN32)
   set_target_properties ({{ .ProjectName }} PROPERTIES SUFFIX ".pyd")
