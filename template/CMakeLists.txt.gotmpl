@@ -1,4 +1,3 @@
-
 cmake_minimum_required( VERSION {{ .CMakeVersion }} )
 project(
   {{ .ProjectName }}
@@ -9,8 +8,8 @@ project(
   {{- if eq .Language "c" }}
   LANGUAGES C
   {{- end }}
-
 )
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD {{ .LanguageVersion }})
 
@@ -18,22 +17,18 @@ set (Python_ADDITIONAL_VERSIONS 3)
 find_package (PythonLibs REQUIRED)
 find_package (PythonInterp REQUIRED)
 
-
-
-
 include(FetchContent)
 
 {{- range .Dependencies }}
-{{- if .GitURL }}
-FetchContent_Declare(
-    {{ .Name }}
-
-    GIT_REPOSITORY {{ .GitURL }}
-    GIT_TAG {{- if .Tag }} {{ .Tag }} {{- else }} latest {{- end }}
-)
-FetchContent_MakeAvailable({{ .Name }})
-{{- end}}
-
+  {{- if .GitURL }}
+  FetchContent_Declare(
+      {{ .Name }}
+      GIT_REPOSITORY {{ .GitURL }}
+      GIT_TAG {{- if .Tag }}{{ .Tag }}{{- else }} latest {{- end }}
+  )
+  FetchContent_MakeAvailable({{ .Name }})
+  {{- end }}
+{{- end }}
 
 add_library({{ .ProjectName }}
   {{- range .SourceFiles }}
@@ -41,18 +36,12 @@ add_library({{ .ProjectName }}
   {{- end }}
 )
 
-
-
-
-
 include_directories(${CMAKE_SOURCE_DIR}/{{ .IncludeDir }})
 set(HEADER_DIR ${CMAKE_SOURCE_DIR}/{{ .IncludeDir }})
 
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
-
-
 
 set(BUILD_DIR {{ .BuildDir }})
 set_target_properties({{ .ProjectName }} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{ .BuildDir }})
@@ -65,7 +54,7 @@ endif()
 
 target_link_libraries ({{ .ProjectName }} "${PYTHON_LIBRARIES}"
 {{- range .Dependencies }}
-{{- if .Link }} {{ .Link }} {{- else }} {{ .Name }}{{- end }}
+  {{- if .Link }} {{ .Link }} {{- else }} {{ .Name }}{{- end }}
 {{- end }}
 )
 
