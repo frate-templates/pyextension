@@ -1,0 +1,73 @@
+
+cmake_minimum_required( VERSION {{ cmake_version }} )
+project(
+  {{ .ProjectName }}
+  VERSION {{ .ProjectVersion }}
+  {{- if eq .Language "cpp" }}
+  LANGUAGES CXX
+  {{- end }}
+  {{- if eq .Language "c" }}
+  LANGUAGES C
+  {{- end }}
+
+)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD {{  }})
+
+set (Python_ADDITIONAL_VERSIONS 3)
+find_package (PythonLibs REQUIRED)
+find_package (PythonInterp REQUIRED)
+
+
+
+
+include(FetchContent)
+
+{{- range .Dependencies }}
+{{- if .GitURL }}
+FetchContent_Declare(
+    {{ .Name }}
+
+    GIT_REPOSITORY {{ .GitURL }}
+    GIT_TAG {{- if .Tag }} {{ .Tag }} {{- else }} latest {{- end }}
+)
+FetchContent_MakeAvailable({{.Name}})
+{{- end}}
+
+
+add_library({{.ProjectName}}
+  {{- range .SourceFiles }}
+  {{ . }}
+  {{- end }}
+)
+
+
+
+
+
+include_directories(${CMAKE_SOURCE_DIR}/{{ include_dir }})
+set(HEADER_DIR ${CMAKE_SOURCE_DIR}/{{ include_dir }})
+
+if(NOT DEFINED RELEASE)
+  set(RELEASE 0)
+endif()
+
+
+
+set(BUILD_DIR {{ .BuildDir }})
+set_target_properties({{name}} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{ .BuildDir }})
+
+if (WIN32)
+  set_target_properties ({{ .ProjectName }} PROPERTIES SUFFIX ".pyd")
+else()
+  set_target_properties ({{ .ProjectName }} PROPERTIES SUFFIX ".so")
+endif()
+
+target_link_libraries ({{ .ProjectName }} "${PYTHON_LIBRARIES}"
+{{- range .Dependencies }}
+{{- if .Link }} {{ .Link }} {{- else }} {{.Name}}{{- end }}
+{{- end}}
+)
+
+
+

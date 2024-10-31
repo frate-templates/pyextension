@@ -1,0 +1,10 @@
+ApiVersion: 0.0.1
+frate:
+  IncludeDir: include
+  SourceFiles:
+    - src/main.cpp.gotmpl
+  BuildCmd: "python3 build/main.py"
+project:
+  special: values
+
+

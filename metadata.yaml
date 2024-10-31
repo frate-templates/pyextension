@@ -1,0 +1,7 @@
+name: pyextension 
+version: 0.0.1
+description: Basic Python Extention 
+dependencies: []
+git_url: https://github.com/frate-templates/pyextension 
+
+
