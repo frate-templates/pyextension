@@ -31,11 +31,11 @@ FetchContent_Declare(
     GIT_REPOSITORY {{ .GitURL }}
     GIT_TAG {{- if .Tag }} {{ .Tag }} {{- else }} latest {{- end }}
 )
-FetchContent_MakeAvailable({{.Name}})
+FetchContent_MakeAvailable({{ .Name }})
 {{- end}}
 
 
-add_library({{.ProjectName}}
+add_library({{ .ProjectName }}
   {{- range .SourceFiles }}
   {{ . }}
   {{- end }}
@@ -65,7 +65,7 @@ endif()
 
 target_link_libraries ({{ .ProjectName }} "${PYTHON_LIBRARIES}"
 {{- range .Dependencies }}
-{{- if .Link }} {{ .Link }} {{- else }} {{.Name}}{{- end }}
+{{- if .Link }} {{ .Link }} {{- else }} {{ .Name }}{{- end }}
 {{- end }}
 )
 
