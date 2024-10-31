@@ -66,8 +66,6 @@ endif()
 target_link_libraries ({{ .ProjectName }} "${PYTHON_LIBRARIES}"
 {{- range .Dependencies }}
 {{- if .Link }} {{ .Link }} {{- else }} {{.Name}}{{- end }}
-{{- end}}
+{{- end }}
 )
-
-
 
