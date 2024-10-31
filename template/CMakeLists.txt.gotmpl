@@ -45,8 +45,8 @@ add_library({{.ProjectName}}
 
 
 
-include_directories(${CMAKE_SOURCE_DIR}/{{ include_dir }})
-set(HEADER_DIR ${CMAKE_SOURCE_DIR}/{{ include_dir }})
+include_directories(${CMAKE_SOURCE_DIR}/{{ .IncludeDir }})
+set(HEADER_DIR ${CMAKE_SOURCE_DIR}/{{ .IncludeDir }})
 
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
